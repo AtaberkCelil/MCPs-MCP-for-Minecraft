@@ -30,7 +30,8 @@ public final class BlockBreakingManager {
         totalProgress = calculateBreakingTime(state);
         isBreaking = true;
 
-        client.gameMode.startDestroyBlock(position, Direction.DOWN);
+        Direction face = calculateFace(position);
+        client.gameMode.startDestroyBlock(position, face);
     }
 
     public static void tick() {
@@ -44,10 +45,11 @@ public final class BlockBreakingManager {
 
         breakingProgress++;
 
-        client.gameMode.continueDestroyBlock(breakingPosition, Direction.DOWN);
+        Direction face = calculateFace(breakingPosition);
+        client.gameMode.continueDestroyBlock(breakingPosition, face);
 
         if (breakingProgress >= totalProgress) {
-            client.gameMode.destroyBlock(breakingPosition);
+            client.gameMode.stopDestroyBlock();
             stopBreaking();
         }
     }
@@ -101,5 +103,23 @@ public final class BlockBreakingManager {
         }
 
         return 1.0f;
+    }
+
+    private static Direction calculateFace(BlockPos position) {
+        double dx = client.player.getX() - (position.getX() + 0.5);
+        double dy = client.player.getY() + client.player.getEyeHeight() - (position.getY() + 0.5);
+        double dz = client.player.getZ() - (position.getZ() + 0.5);
+
+        double absDx = Math.abs(dx);
+        double absDy = Math.abs(dy);
+        double absDz = Math.abs(dz);
+
+        if (absDy > absDx && absDy > absDz) {
+            return dy > 0 ? Direction.DOWN : Direction.UP;
+        } else if (absDx > absDz) {
+            return dx > 0 ? Direction.EAST : Direction.WEST;
+        } else {
+            return dz > 0 ? Direction.SOUTH : Direction.NORTH;
+        }
     }
 }

@@ -226,6 +226,15 @@ public final class GameTools {
         BlockState state = client.level.getBlockState(position);
         if (state.isAir()) return error("No block at that position.");
 
+        double dx = position.getX() + 0.5 - client.player.getX();
+        double dy = position.getY() + 0.5 - (client.player.getY() + client.player.getEyeHeight());
+        double dz = position.getZ() + 0.5 - client.player.getZ();
+        double horizontalDist = Math.sqrt(dx * dx + dz * dz);
+        float yaw = (float) (Math.toDegrees(Math.atan2(-dx, dz)));
+        float pitch = (float) (Math.toDegrees(Math.atan2(-dy, horizontalDist)));
+        client.player.setYRot(yaw);
+        client.player.setXRot(Math.max(-90, Math.min(90, pitch)));
+
         int breakTime = getEstimatedBreakTime(state, position);
         if (breakTime < 0) return error("This block cannot be broken.");
 
