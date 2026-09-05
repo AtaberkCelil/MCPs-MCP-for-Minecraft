@@ -45,6 +45,7 @@ public final class McpProtocol {
         tools.add(tool("move_player", "Apply a short movement impulse relative to the player's facing direction.", objectSchema(null, "forward", "number", "Forward/backward input.", "strafe", "number", "Left/right input.", "jump", "boolean", "Whether to jump.")));
         tools.add(tool("set_player_input", "Hold or release movement keys like a player, including sprint, crouch, and jump.", objectSchema(null, "forward", "number", "Positive forward, negative backward.", "strafe", "number", "Positive right, negative left.", "jump", "boolean", "Jump now.", "sprint", "boolean", "Hold sprint.", "crouch", "boolean", "Hold crouch.")));
         tools.add(tool("look", "Set the local player's yaw and pitch.", objectSchema(null, "yaw", "number", "Yaw in degrees.", "pitch", "number", "Pitch in degrees.")));
+        tools.add(tool("lookRelative", "Set the local player's yaw and pitch relatively.", objectSchema(null, "yaw", "number", "Relative yaw change.", "pitch", "number", "Relative pitch change.")));
         tools.add(tool("eat", "Start eating the held food item when the player is hungry.", new JsonObject()));
         tools.add(tool("attack", "Attack the entity currently under the crosshair.", new JsonObject()));
         tools.add(tool("break_block", "Start breaking a block like a real player (holds attack, waits for break time).", objectSchema("x", "x", "integer", "Block x coordinate.", "y", "y", "integer", "Block y coordinate.", "z", "z", "integer", "Block z coordinate.")));

@@ -38,6 +38,7 @@ public final class GameTools {
             case "move_player" -> movePlayer(arguments);
             case "set_player_input" -> setPlayerInput(arguments);
             case "look" -> look(arguments);
+            case "lookRelative" -> lookRelative(arguments);
             case "eat" -> eat();
             case "attack" -> attack();
             case "break_block" -> breakBlock(arguments);
@@ -197,6 +198,19 @@ public final class GameTools {
         if (arguments.has("yaw")) client.player.setYRot(arguments.get("yaw").getAsFloat());
         if (arguments.has("pitch")) client.player.setXRot(Math.max(-90, Math.min(90, arguments.get("pitch").getAsFloat())));
         return textResult("Look", "Updated player look direction.");
+    }
+
+    private static JsonObject lookRelative(JsonObject arguments) {
+        if (!allowed(config == null || config.allowWorldActions)) return error("World actions are disabled in MCPs settings.");
+        float currentYaw = client.player.getYRot();
+        float currentPitch = client.player.getXRot();
+        float yaw = currentYaw;
+        float pitch = currentPitch;
+        if (arguments.has("yaw")) yaw = currentYaw + arguments.get("yaw").getAsFloat();
+        if (arguments.has("pitch")) pitch = currentPitch + arguments.get("pitch").getAsFloat();
+        client.player.setYRot(yaw);
+        client.player.setXRot(Math.max(-90, Math.min(90, pitch)));
+        return textResult("Look Relative", "Updated player look direction relatively.");
     }
 
     private static JsonObject attack() {
