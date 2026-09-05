@@ -16,6 +16,8 @@ Install Java 25 and Gradle 9.5 or newer, then run:
 
 The generated mod jar will be in `build/libs`.
 
+> Note: Fabric currently lists Minecraft `26.2`, but its Yarn and official Mojang mapping artifacts are not published yet. The project keeps the requested `26.2` target and will build once those upstream mappings are available.
+
 ## Connecting an MCP client
 
 Add the endpoint as a Streamable HTTP MCP server using:
