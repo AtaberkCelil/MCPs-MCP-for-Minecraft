@@ -81,11 +81,11 @@ public final class McpProtocol {
         JsonObject schema = new JsonObject();
         schema.addProperty("type", "object");
         JsonObject properties = new JsonObject();
-        for (int index = 0; index < fields.length; index += 4) {
+        for (int index = 0; index < fields.length; index += 3) {
             JsonObject property = new JsonObject();
-            property.addProperty("type", fields[index + 2]);
-            property.addProperty("description", fields[index + 3]);
-            properties.add(fields[index + 1], property);
+            property.addProperty("type", fields[index + 1]);
+            property.addProperty("description", fields[index + 2]);
+            properties.add(fields[index], property);
         }
         schema.add("properties", properties);
         if (required != null) {
