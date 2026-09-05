@@ -28,12 +28,27 @@ http://127.0.0.1:25575/mcp
 
 The endpoint binds to loopback only. Do not expose it directly to a network without adding authentication and an explicit permission model.
 
+## Configuration
+
+Install Mod Menu to open **MCPs Settings** from the Mods screen. Cloth Config provides the settings screen. You can change the port, enable or disable automatic startup, and independently allow chat, commands, keyboard and mouse input, inventory input, and world actions. Changes to the port restart the local endpoint immediately.
+
 ## Available tools
 
 - `get_player_state`
 - `get_nearby_blocks`
+- `get_screen_state`
+- `press_key`
+- `click_screen`
+- `move_player`
+- `look`
+- `attack`
+- `use_item`
+- `click_inventory_slot`
+- `select_hotbar_slot`
 - `send_chat`
 - `execute_command`
+
+The screen and inventory tools allow an AI client to navigate ordinary Minecraft menus and crafting interfaces by observing the current screen and clicking the same controls a player would use. The action set is intentionally permission-gated rather than exposing unrestricted client internals.
 
 ## License
 

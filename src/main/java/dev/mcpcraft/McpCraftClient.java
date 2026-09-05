@@ -6,24 +6,44 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 
 public final class McpCraftClient implements ClientModInitializer {
-    private static final int DEFAULT_PORT = 25575;
+    private static McpsConfig config;
     private McpHttpServer server;
 
     @Override
     public void onInitializeClient() {
+        McpCraftClientHolder.INSTANCE = this;
+        config = McpsConfig.load();
         GameTools.bind(Minecraft.getInstance());
-        server = new McpHttpServer(DEFAULT_PORT, this::runOnClientThread);
-        ClientLifecycleEvents.CLIENT_STARTED.register(client -> server.start());
+        GameTools.bindConfig(config);
+        server = new McpHttpServer(config.port);
+        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+            if (config.startServer) server.start();
+        });
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> server.stop());
         ClientTickEvents.END_CLIENT_TICK.register(client -> server.drainMainThreadTasks());
     }
 
-    private void runOnClientThread(Runnable task) {
-        Minecraft client = Minecraft.getInstance();
-        if (client.isSameThread()) {
-            task.run();
-        } else {
-            client.execute(task);
+    public static McpsConfig config() {
+        return config;
+    }
+
+    public static void saveConfig() {
+        config.save();
+        GameTools.bindConfig(config);
+        if (Minecraft.getInstance().level != null) {
+            reloadServer();
         }
+    }
+
+    private static void reloadServer() {
+        // The server instance is recreated so a changed port applies immediately.
+        McpCraftClient instance = McpCraftClientHolder.INSTANCE;
+        if (instance.server != null) instance.server.stop();
+        instance.server = new McpHttpServer(config.port);
+        if (config.startServer) instance.server.start();
+    }
+
+    private static final class McpCraftClientHolder {
+        private static McpCraftClient INSTANCE;
     }
 }

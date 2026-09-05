@@ -1,0 +1,12 @@
+{
+  "title.mcps.config": "MCPs Settings",
+  "category.mcps.server": "MCP Server",
+  "category.mcps.permissions": "AI Permissions",
+  "option.mcps.port": "Port",
+  "option.mcps.start_server": "Start server with Minecraft",
+  "option.mcps.allow_chat": "Allow chat messages",
+  "option.mcps.allow_commands": "Allow commands",
+  "option.mcps.allow_input": "Allow keyboard and mouse input",
+  "option.mcps.allow_world_actions": "Allow world actions",
+  "option.mcps.action_distance": "Maximum action distance"
+}

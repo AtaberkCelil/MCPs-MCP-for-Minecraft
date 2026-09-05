@@ -27,7 +27,7 @@ public final class McpProtocol {
         capabilities.add("tools", new JsonObject());
         result.add("capabilities", capabilities);
         JsonObject serverInfo = new JsonObject();
-        serverInfo.addProperty("name", "mcp-craft");
+        serverInfo.addProperty("name", "mcps");
         serverInfo.addProperty("version", "0.1.0");
         result.add("serverInfo", serverInfo);
         return result;
@@ -37,6 +37,15 @@ public final class McpProtocol {
         JsonArray tools = new JsonArray();
         tools.add(tool("get_player_state", "Read the local player's position, health, hunger, and dimension.", new JsonObject()));
         tools.add(tool("get_nearby_blocks", "Read blocks in a small radius around the local player.", schema("radius", "integer", 1, 8)));
+        tools.add(tool("get_screen_state", "Read the currently open Minecraft screen so the AI can navigate menus.", new JsonObject()));
+        tools.add(tool("press_key", "Send a key press to the currently open Minecraft screen.", objectSchema("keyCode", "keyCode", "integer", "GLFW key code.", "scanCode", "integer", "Optional scan code.", "modifiers", "integer", "Optional GLFW modifiers.")));
+        tools.add(tool("click_screen", "Click a coordinate in the currently open Minecraft screen.", objectSchema("x", "x", "number", "Screen x coordinate.", "y", "y", "number", "Screen y coordinate.", "button", "integer", "Mouse button, default 0.")));
+        tools.add(tool("move_player", "Apply a short movement impulse relative to the player's facing direction.", objectSchema(null, "forward", "number", "Forward/backward input.", "strafe", "number", "Left/right input.", "jump", "boolean", "Whether to jump.")));
+        tools.add(tool("look", "Set the local player's yaw and pitch.", objectSchema(null, "yaw", "number", "Yaw in degrees.", "pitch", "number", "Pitch in degrees.")));
+        tools.add(tool("attack", "Attack the entity currently under the crosshair.", new JsonObject()));
+        tools.add(tool("use_item", "Use the item in the main hand.", new JsonObject()));
+        tools.add(tool("click_inventory_slot", "Click a slot in the currently open inventory screen.", objectSchema("slot", "slot", "integer", "Slot id.", "button", "integer", "Mouse button, default 0.")));
+        tools.add(tool("select_hotbar_slot", "Select a hotbar slot from 0 through 8.", schema("slot", "integer", 0, 8)));
         tools.add(tool("send_chat", "Send a chat message as the local player.", schema("message", "string", null, null)));
         tools.add(tool("execute_command", "Run a Minecraft command without the leading slash.", schema("command", "string", null, null)));
         JsonObject result = new JsonObject();
@@ -65,6 +74,25 @@ public final class McpProtocol {
         JsonArray required = new JsonArray();
         required.add(property);
         schema.add("required", required);
+        return schema;
+    }
+
+    private static JsonObject objectSchema(String required, String... fields) {
+        JsonObject schema = new JsonObject();
+        schema.addProperty("type", "object");
+        JsonObject properties = new JsonObject();
+        for (int index = 0; index < fields.length; index += 4) {
+            JsonObject property = new JsonObject();
+            property.addProperty("type", fields[index + 2]);
+            property.addProperty("description", fields[index + 3]);
+            properties.add(fields[index + 1], property);
+        }
+        schema.add("properties", properties);
+        if (required != null) {
+            JsonArray requiredProperties = new JsonArray();
+            requiredProperties.add(required);
+            schema.add("required", requiredProperties);
+        }
         return schema;
     }
 

@@ -10,6 +10,8 @@ MCPs is a Fabric client-side mod that runs a local [Model Context Protocol](http
 - Inspect nearby blocks around the player
 - Send chat messages through the local player
 - Execute Minecraft commands through the local player
+- Navigate screens, click buttons, use inventories, and select hotbar slots
+- Move, look, attack, and use the held item
 - Localhost-only HTTP endpoint for reduced network exposure
 - Designed for Fabric and Minecraft `26.2`
 
@@ -25,6 +27,8 @@ MCPs is a Fabric client-side mod that runs a local [Model Context Protocol](http
    ```
 
 The server starts when the client starts and stops when Minecraft closes.
+
+Install Mod Menu to open **MCPs Settings** in-game. The Cloth Config screen controls the port, automatic startup, chat, commands, input, inventory, and world-action permissions.
 
 ## Security
 

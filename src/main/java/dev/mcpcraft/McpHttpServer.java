@@ -11,18 +11,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 public final class McpHttpServer {
     private static final Gson GSON = new Gson();
     private final int port;
-    private final Consumer<Runnable> mainThreadExecutor;
     private final ConcurrentLinkedQueue<Runnable> mainThreadTasks = new ConcurrentLinkedQueue<>();
     private HttpServer server;
 
-    public McpHttpServer(int port, Consumer<Runnable> mainThreadExecutor) {
+    public McpHttpServer(int port) {
         this.port = port;
-        this.mainThreadExecutor = mainThreadExecutor;
     }
 
     public void start() {
@@ -31,9 +28,9 @@ public final class McpHttpServer {
             server.createContext("/mcp", this::handleRequest);
             server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
             server.start();
-            System.out.println("[MCP Craft] MCP endpoint listening at http://127.0.0.1:" + port + "/mcp");
+            System.out.println("[MCPs] MCP endpoint listening at http://127.0.0.1:" + port + "/mcp");
         } catch (IOException exception) {
-            System.err.println("[MCP Craft] Could not start MCP endpoint: " + exception.getMessage());
+            System.err.println("[MCPs] Could not start MCP endpoint: " + exception.getMessage());
         }
     }
 
