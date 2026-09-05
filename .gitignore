@@ -1,0 +1,10 @@
+.gradle/
+build/
+out/
+run/
+eclipse/
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/settings.json
