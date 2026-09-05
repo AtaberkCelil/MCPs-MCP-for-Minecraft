@@ -5,6 +5,7 @@
   "name": "MCPs",
   "description": "A local Model Context Protocol server for controlling Minecraft with AI.",
   "authors": ["MCPs contributors"],
+  "icon": "assets/mcps/logo.png",
   "contact": {
     "sources": "https://github.com/modelcontextprotocol"
   },
