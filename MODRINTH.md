@@ -2,7 +2,11 @@
 
 Give your AI a live connection to Minecraft.
 
-MCPs is a Fabric client-side mod that runs a local [Model Context Protocol](https://modelcontextprotocol.io/) server inside Minecraft. Connect an MCP-compatible AI client and let it read the current game state, inspect nearby blocks, send chat messages, and execute Minecraft commands from a controlled local endpoint.
+MCPs is a Fabric client-side mod that runs a local [Model Context Protocol](https://modelcontextprotocol.io/) server inside Minecraft. It gives an MCP-compatible AI client tools to read the player and world, inspect nearby blocks, navigate menus, click inventory slots, move, look, attack, use items, send chat, and execute commands.
+
+Install MCPs if you want to control and observe a Minecraft session from an AI assistant through the same kinds of interactions available to a player. This makes MCPs useful for automation, accessibility, testing, guided building, and AI-assisted exploration without requiring a separate bridge application.
+
+Before downloading, know that MCPs is a client-side mod for Fabric and requires Minecraft `26.2`, Fabric Loader, Fabric API, and Java `25` or newer. An MCP client must connect to the local endpoint, and powerful actions such as commands and world interaction can be enabled or disabled in the in-game settings. The server binds to `127.0.0.1` by default, but you should still connect only trusted AI clients.
 
 ## Features
 

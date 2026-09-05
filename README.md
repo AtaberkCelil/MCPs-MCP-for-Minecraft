@@ -6,6 +6,8 @@
 
 MCPs is a Fabric client mod that exposes a local Model Context Protocol endpoint so an MCP-capable AI client can inspect and control a Minecraft session.
 
+Install it to connect an AI assistant directly to Minecraft for automation, accessibility, testing, guided building, and AI-assisted exploration. MCPs is client-side, requires Fabric on Minecraft `26.2` with Java `25+`, and should only be connected to AI clients you trust because it can perform player actions and commands.
+
 ## Status
 
 The project targets Minecraft `26.2` and Fabric Loader `0.19.5`. The initial scaffold exposes the protocol endpoint at `http://127.0.0.1:25575/mcp`.
