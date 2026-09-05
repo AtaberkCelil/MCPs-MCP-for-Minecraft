@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.inventory.ClickType;
 
 public final class GameTools {
     private static Minecraft client;
@@ -23,7 +22,7 @@ public final class GameTools {
     }
 
     public static JsonObject dispatch(String name, JsonObject arguments) {
-        if (client == null || client.player == null || client.world == null) {
+        if (client == null || client.player == null || client.level == null) {
             return error("A world and local player must be available.");
         }
         return switch (name) {
@@ -52,18 +51,18 @@ public final class GameTools {
         state.addProperty("z", client.player.getZ());
         state.addProperty("health", client.player.getHealth());
         state.addProperty("food", client.player.getFoodData().getFoodLevel());
-        state.addProperty("dimension", client.level.dimension().location().toString());
+        state.addProperty("dimension", client.level.dimension().toString());
         return textResult("Player state", state.toString());
     }
 
     private static JsonObject nearbyBlocks(JsonObject arguments) {
         int radius = arguments.has("radius") ? Math.min(8, Math.max(1, arguments.get("radius").getAsInt())) : 2;
-        BlockPos center = client.player.getBlockPos();
+        BlockPos center = client.player.blockPosition();
         JsonArray blocks = new JsonArray();
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
-                    BlockPos position = center.add(x, y, z);
+                    BlockPos position = center.offset(x, y, z);
                     JsonObject block = new JsonObject();
                     block.addProperty("x", position.getX());
                     block.addProperty("y", position.getY());
@@ -93,28 +92,15 @@ public final class GameTools {
     }
 
     private static JsonObject screenState() {
-        if (client.screen == null) return textResult("Screen", "No screen is open.");
-        return textResult("Screen", client.screen.getClass().getName() + " (" + client.screen.width + "x" + client.screen.height + ")");
+        return error("Screen inspection is not available through the 26.2 official client API yet.");
     }
 
     private static JsonObject pressKey(JsonObject arguments) {
-        if (!allowed(config == null || config.allowInput)) return error("Keyboard input is disabled in MCPs settings.");
-        if (client.screen == null || !arguments.has("keyCode")) return error("An open screen and keyCode are required.");
-        int keyCode = arguments.get("keyCode").getAsInt();
-        int scanCode = arguments.has("scanCode") ? arguments.get("scanCode").getAsInt() : 0;
-        int modifiers = arguments.has("modifiers") ? arguments.get("modifiers").getAsInt() : 0;
-        boolean handled = client.screen.keyPressed(keyCode, scanCode, modifiers);
-        return textResult("Key", handled ? "Key handled by screen." : "Key was not handled.");
+        return error("Keyboard input is not available through the 26.2 official client API yet.");
     }
 
     private static JsonObject clickScreen(JsonObject arguments) {
-        if (!allowed(config == null || config.allowInput)) return error("Mouse input is disabled in MCPs settings.");
-        if (client.screen == null || !arguments.has("x") || !arguments.has("y")) return error("An open screen and x/y are required.");
-        double x = arguments.get("x").getAsDouble();
-        double y = arguments.get("y").getAsDouble();
-        int button = arguments.has("button") ? arguments.get("button").getAsInt() : 0;
-        boolean handled = client.screen.mouseClicked(x, y, button);
-        return textResult("Mouse", handled ? "Click handled by screen." : "Click was not handled.");
+        return error("Screen clicks are not available through the 26.2 official client API yet.");
     }
 
     private static JsonObject movePlayer(JsonObject arguments) {
@@ -149,12 +135,7 @@ public final class GameTools {
     }
 
     private static JsonObject clickInventorySlot(JsonObject arguments) {
-        if (!allowed(config == null || config.allowInput)) return error("Inventory input is disabled in MCPs settings.");
-        if (client.gameMode == null || client.player.containerMenu == null || !arguments.has("slot")) return error("An open inventory and slot are required.");
-        int slot = arguments.get("slot").getAsInt();
-        int button = arguments.has("button") ? arguments.get("button").getAsInt() : 0;
-        client.gameMode.handleInventoryMouseClick(client.player.containerMenu.containerId, slot, button, ClickType.PICKUP, client.player);
-        return textResult("Inventory", "Clicked inventory slot " + slot + ".");
+        return error("Inventory slot clicks are not available through the 26.2 official client API yet.");
     }
 
     private static JsonObject selectHotbarSlot(JsonObject arguments) {
