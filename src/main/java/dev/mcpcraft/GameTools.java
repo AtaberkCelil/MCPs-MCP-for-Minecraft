@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 
@@ -34,6 +35,8 @@ public final class GameTools {
             case "move_player" -> movePlayer(arguments);
             case "look" -> look(arguments);
             case "attack" -> attack();
+            case "break_block" -> breakBlock(arguments);
+            case "place_block" -> placeBlock(arguments);
             case "use_item" -> useItem();
             case "click_inventory_slot" -> clickInventorySlot(arguments);
             case "select_hotbar_slot" -> selectHotbarSlot(arguments);
@@ -132,6 +135,45 @@ public final class GameTools {
         if (client.gameMode == null) return error("No game mode is available.");
         client.gameMode.useItem(client.player, InteractionHand.MAIN_HAND);
         return textResult("Use", "Used the item in the main hand.");
+    }
+
+    private static JsonObject breakBlock(JsonObject arguments) {
+        if (!allowed(config == null || config.allowWorldActions)) return error("World actions are disabled in MCPs settings.");
+        if (client.gameMode == null || !hasBlockPosition(arguments)) return error("x, y, and z are required.");
+        BlockPos position = blockPosition(arguments);
+        if (!withinActionDistance(position)) return error("Target block is too far away.");
+        boolean broken = client.gameMode.destroyBlock(position);
+        return textResult("Break block", broken ? "Broke the targeted block." : "The block could not be broken.");
+    }
+
+    private static JsonObject placeBlock(JsonObject arguments) {
+        if (!allowed(config == null || config.allowWorldActions)) return error("World actions are disabled in MCPs settings.");
+        if (client.gameMode == null || !hasBlockPosition(arguments)) return error("x, y, and z are required.");
+        BlockPos position = blockPosition(arguments);
+        if (!withinActionDistance(position)) return error("Target block is too far away.");
+        Direction side = arguments.has("side") ? Direction.byName(arguments.get("side").getAsString()) : Direction.UP;
+        if (side == null) side = Direction.UP;
+        BlockPos support = position.relative(side.getOpposite());
+        var hit = new net.minecraft.world.phys.BlockHitResult(
+                new Vec3(support.getX() + 0.5, support.getY() + 0.5, support.getZ() + 0.5),
+                side,
+                support,
+                false);
+        var result = client.gameMode.useItemOn(client.player, InteractionHand.MAIN_HAND, hit);
+        return textResult("Place block", result.consumesAction() ? "Placed the held block." : "The held item could not place a block there.");
+    }
+
+    private static boolean hasBlockPosition(JsonObject arguments) {
+        return arguments.has("x") && arguments.has("y") && arguments.has("z");
+    }
+
+    private static BlockPos blockPosition(JsonObject arguments) {
+        return new BlockPos(arguments.get("x").getAsInt(), arguments.get("y").getAsInt(), arguments.get("z").getAsInt());
+    }
+
+    private static boolean withinActionDistance(BlockPos position) {
+        int distance = config == null ? 6 : config.actionDistance;
+        return client.player.blockPosition().distSqr(position) <= distance * distance;
     }
 
     private static JsonObject clickInventorySlot(JsonObject arguments) {

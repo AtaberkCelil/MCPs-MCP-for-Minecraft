@@ -43,6 +43,8 @@ public final class McpProtocol {
         tools.add(tool("move_player", "Apply a short movement impulse relative to the player's facing direction.", objectSchema(null, "forward", "number", "Forward/backward input.", "strafe", "number", "Left/right input.", "jump", "boolean", "Whether to jump.")));
         tools.add(tool("look", "Set the local player's yaw and pitch.", objectSchema(null, "yaw", "number", "Yaw in degrees.", "pitch", "number", "Pitch in degrees.")));
         tools.add(tool("attack", "Attack the entity currently under the crosshair.", new JsonObject()));
+        tools.add(tool("break_block", "Break a targeted block using the player's normal game interaction.", objectSchema("x", "x", "integer", "Block x coordinate.", "y", "y", "integer", "Block y coordinate.", "z", "z", "integer", "Block z coordinate.")));
+        tools.add(tool("place_block", "Place the held block against a targeted position using normal player interaction.", objectSchema("x", "x", "integer", "Block x coordinate.", "y", "y", "integer", "Block y coordinate.", "z", "z", "integer", "Block z coordinate.", "side", "string", "Optional face: up, down, north, south, east, or west.")));
         tools.add(tool("use_item", "Use the item in the main hand.", new JsonObject()));
         tools.add(tool("click_inventory_slot", "Click a slot in the currently open inventory screen.", objectSchema("slot", "slot", "integer", "Slot id.", "button", "integer", "Mouse button, default 0.")));
         tools.add(tool("select_hotbar_slot", "Select a hotbar slot from 0 through 8.", schema("slot", "integer", 0, 8)));

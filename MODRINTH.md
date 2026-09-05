@@ -16,6 +16,7 @@ Before downloading, know that MCPs is a client-side mod for Fabric and requires 
 - Execute Minecraft commands through the local player
 - Navigate screens, click buttons, use inventories, and select hotbar slots
 - Move, look, attack, and use the held item
+- Break and place blocks through normal player interaction APIs
 - Localhost-only HTTP endpoint for reduced network exposure
 - Designed for Fabric and Minecraft `26.2`
 

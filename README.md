@@ -48,13 +48,15 @@ Install Mod Menu to open **MCPs Settings** from the Mods screen. Cloth Config pr
 - `move_player`
 - `look`
 - `attack`
+- `break_block`
+- `place_block`
 - `use_item`
 - `click_inventory_slot`
 - `select_hotbar_slot`
 - `send_chat`
 - `execute_command`
 
-The screen and inventory tools allow an AI client to navigate ordinary Minecraft menus and crafting interfaces by observing the current screen and clicking the same controls a player would use. The action set is intentionally permission-gated rather than exposing unrestricted client internals.
+The block tools use Minecraft's normal client interaction APIs instead of commands, so breaking and placing respect the player's game mode, reach, held item, and world rules. The action set is permission-gated rather than exposing unrestricted client internals.
 
 ## License
 
