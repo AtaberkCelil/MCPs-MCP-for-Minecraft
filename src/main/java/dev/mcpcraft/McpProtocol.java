@@ -36,14 +36,20 @@ public final class McpProtocol {
     private static JsonObject tools() {
         JsonArray tools = new JsonArray();
         tools.add(tool("get_player_state", "Read the local player's position, health, hunger, and dimension.", new JsonObject()));
-        tools.add(tool("get_nearby_blocks", "Read blocks in a small radius around the local player.", schema("radius", "integer", 1, 8)));
+        tools.add(tool("get_nearby_blocks", "Read blocks around the local player.", schema("radius", "integer", 1, 16)));
+        tools.add(tool("get_nearby_entities", "Read nearby mobs, players, and other entities.", schema("radius", "number", 1, 32)));
+        tools.add(tool("get_inventory", "Read the non-empty inventory slots and held items.", new JsonObject()));
         tools.add(tool("get_screen_state", "Read the currently open Minecraft screen so the AI can navigate menus.", new JsonObject()));
         tools.add(tool("press_key", "Send a key press to the currently open Minecraft screen.", objectSchema("keyCode", "keyCode", "integer", "GLFW key code.", "scanCode", "integer", "Optional scan code.", "modifiers", "integer", "Optional GLFW modifiers.")));
         tools.add(tool("click_screen", "Click a coordinate in the currently open Minecraft screen.", objectSchema("x", "x", "number", "Screen x coordinate.", "y", "y", "number", "Screen y coordinate.", "button", "integer", "Mouse button, default 0.")));
         tools.add(tool("move_player", "Apply a short movement impulse relative to the player's facing direction.", objectSchema(null, "forward", "number", "Forward/backward input.", "strafe", "number", "Left/right input.", "jump", "boolean", "Whether to jump.")));
+        tools.add(tool("set_player_input", "Hold or release movement keys like a player, including sprint, crouch, and jump.", objectSchema(null, "forward", "number", "Positive forward, negative backward.", "strafe", "number", "Positive right, negative left.", "jump", "boolean", "Jump now.", "sprint", "boolean", "Hold sprint.", "crouch", "boolean", "Hold crouch.")));
         tools.add(tool("look", "Set the local player's yaw and pitch.", objectSchema(null, "yaw", "number", "Yaw in degrees.", "pitch", "number", "Pitch in degrees.")));
+        tools.add(tool("eat", "Start eating the held food item when the player is hungry.", new JsonObject()));
         tools.add(tool("attack", "Attack the entity currently under the crosshair.", new JsonObject()));
-        tools.add(tool("break_block", "Break a targeted block using the player's normal game interaction.", objectSchema("x", "x", "integer", "Block x coordinate.", "y", "y", "integer", "Block y coordinate.", "z", "z", "integer", "Block z coordinate.")));
+        tools.add(tool("break_block", "Start breaking a block like a real player (holds attack, waits for break time).", objectSchema("x", "x", "integer", "Block x coordinate.", "y", "y", "integer", "Block y coordinate.", "z", "z", "integer", "Block z coordinate.")));
+        tools.add(tool("get_break_status", "Check the current block breaking progress.", new JsonObject()));
+        tools.add(tool("cancel_break", "Cancel the current block breaking.", new JsonObject()));
         tools.add(tool("place_block", "Place the held block against a targeted position using normal player interaction.", objectSchema("x", "x", "integer", "Block x coordinate.", "y", "y", "integer", "Block y coordinate.", "z", "z", "integer", "Block z coordinate.", "side", "string", "Optional face: up, down, north, south, east, or west.")));
         tools.add(tool("use_item", "Use the item in the main hand.", new JsonObject()));
         tools.add(tool("click_inventory_slot", "Click a slot in the currently open inventory screen.", objectSchema("slot", "slot", "integer", "Slot id.", "button", "integer", "Mouse button, default 0.")));

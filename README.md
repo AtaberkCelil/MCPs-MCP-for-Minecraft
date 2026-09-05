@@ -42,11 +42,15 @@ Install Mod Menu to open **MCPs Settings** from the Mods screen. Cloth Config pr
 
 - `get_player_state`
 - `get_nearby_blocks`
+- `get_nearby_entities`
+- `get_inventory`
 - `get_screen_state`
 - `press_key`
 - `click_screen`
 - `move_player`
+- `set_player_input`
 - `look`
+- `eat`
 - `attack`
 - `break_block`
 - `place_block`
@@ -56,7 +60,7 @@ Install Mod Menu to open **MCPs Settings** from the Mods screen. Cloth Config pr
 - `send_chat`
 - `execute_command`
 
-The block tools use Minecraft's normal client interaction APIs instead of commands, so breaking and placing respect the player's game mode, reach, held item, and world rules. The action set is permission-gated rather than exposing unrestricted client internals.
+The tools expose player-like movement input, sprinting, crouching, jumping, eating, inventory awareness, nearby entities, and expanded block visibility. Breaking and placing use Minecraft's normal client interaction APIs instead of commands, so they respect the player's game mode, reach, held item, and world rules. The action set is permission-gated rather than exposing unrestricted client internals.
 
 ## License
 

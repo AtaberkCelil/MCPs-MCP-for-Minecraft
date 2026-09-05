@@ -15,12 +15,16 @@ public final class McpCraftClient implements ClientModInitializer {
         config = McpsConfig.load();
         GameTools.bind(Minecraft.getInstance());
         GameTools.bindConfig(config);
+        BlockBreakingManager.bind(Minecraft.getInstance());
         server = new McpHttpServer(config.port);
         ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
             if (config.startServer) server.start();
         });
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> server.stop());
-        ClientTickEvents.END_CLIENT_TICK.register(client -> server.drainMainThreadTasks());
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            BlockBreakingManager.tick();
+            server.drainMainThreadTasks();
+        });
     }
 
     public static McpsConfig config() {
