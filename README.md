@@ -1,7 +1,7 @@
 # MCPs - MCP for Minecraft
 
 <p align="center">
-	<img src="src/main/resources/assets/mcps/logo.png" alt="MCPs logo" width="128" height="128">
+	<img src="logo.png" alt="MCPs logo" width="128" height="128">
 </p>
 
 MCPs is a Fabric client mod that exposes a local Model Context Protocol endpoint so an MCP-capable AI client can inspect and control a Minecraft session.
