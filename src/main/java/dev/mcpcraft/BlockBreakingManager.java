@@ -46,9 +46,9 @@ public final class BlockBreakingManager {
         breakingProgress++;
 
         Direction face = calculateFace(breakingPosition);
-        client.gameMode.continueDestroyBlock(breakingPosition, face);
+        boolean finished = client.gameMode.continueDestroyBlock(breakingPosition, face);
 
-        if (breakingProgress >= totalProgress) {
+        if (finished) {
             client.gameMode.stopDestroyBlock();
             stopBreaking();
         }
